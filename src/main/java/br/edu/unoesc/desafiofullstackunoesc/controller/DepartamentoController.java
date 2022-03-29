@@ -8,6 +8,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,7 +24,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.edu.unoesc.desafiofullstackunoesc.domain.Beneficio;
 import br.edu.unoesc.desafiofullstackunoesc.domain.Departamento;
+import br.edu.unoesc.desafiofullstackunoesc.domain.Municipio;
 import br.edu.unoesc.desafiofullstackunoesc.service.DepartamentoService;
 
 @Controller
@@ -111,16 +116,20 @@ public class DepartamentoController {
 	 */
 
 	public String teste() throws IOException {
-		 URL url = new URL("http://api.portaldatransparencia.gov.br/api-de-dados/orgaos-siafi?pagina=1");
+		URL url = new URL("https://api.portaldatransparencia.gov.br/api-de-dados/auxilio-emergencial-beneficiario-por-municipio?codigoIbge=4209003%20&mesAno=202108&pagina=1");
 		//URL url = new URL("http://ip.jsontest.com/");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
-		connection.setRequestProperty("Accept", "application/json");connection.setRequestProperty("chave-api-dados",
-		"86852ef80c2505cdc3728d23d30d4d06");
+		connection.setRequestProperty("Accept", "application/json");
+		connection.setRequestProperty("chave-api-dados", "86852ef80c2505cdc3728d23d30d4d06");
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		String output;
-		while ((output = buffer.readLine()) != null) {
-			System.out.println(output);
+		String output = "";
+	
+		Beneficio[] ben_beneficiario = new ObjectMapper().readValue(buffer, Beneficio[].class);
+		
+		for(int i = 0; i < ben_beneficiario.length; i++) {
+			System.out.println(ben_beneficiario[i].beneficiario.nome);
+			System.out.println(ben_beneficiario[i].valor);
 		}
 		connection.disconnect();
 		return output;

@@ -12,8 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import br.edu.unoesc.desafiofullstackunoesc.domain.Perfil;
 import br.edu.unoesc.desafiofullstackunoesc.domain.Usuario;
 import br.edu.unoesc.desafiofullstackunoesc.repository.UsuarioRepository;
 
@@ -22,8 +20,6 @@ public class UsuarioService implements UserDetailsService {
 
 	@Autowired
 	private UsuarioRepository repository;
-	/*@Autowired
-	private Datatables datatables;*/
 	
 	@Transactional(readOnly = true)
 	public Usuario buscarPorEmail(String email) {
@@ -36,27 +32,9 @@ public class UsuarioService implements UserDetailsService {
 		return new User(
 			usuario.getEmail(),
 			usuario.getSenha(),
-			AuthorityUtils.NO_AUTHORITIES//createAuthorityList(getAtuthorities(usuario.getPerfis()))
+			AuthorityUtils.NO_AUTHORITIES
 		);
 	}
-	
-	/*private String[] getAtuthorities(List<Perfil> perfis) {
-		String[] authorities = new String[perfis.size()];
-		for (int i = 0; i < perfis.size(); i++) {
-			authorities[i] = perfis.get(i).getDesc();
-		}
-		return authorities;
-	}*/
-	
-	/*@Transactional(readOnly = true)
-	public Map<String, Object> buscarTodos(HttpServletRequest request) {
-		datatables.setRequest(request);
-		datatables.setColunas(DatatablesColunas.USUARIOS);
-		Page<Usuario> page = datatables.getSearch().isEmpty()
-				? repository.findAll(datatables.getPageable())
-				: repository.findByEmailOrPerfil(datatables.getSearch(), datatables.getPageable());
-		return datatables.getResponse(page);
-	}*/
 
 	@Transactional(readOnly = false)
 	public void salvarUsuario(Usuario usuario) {
@@ -71,11 +49,4 @@ public class UsuarioService implements UserDetailsService {
 		
 		return repository.findById(id).get();
 	}
-
-	/*@Transactional(readOnly = true)
-	public Usuario buscarPorIdEPerfis(Long usuarioId, Long[] perfisId) {
-		
-		return repository.findByIdAndPerfis(usuarioId, perfisId)
-				.orElseThrow(() -> new UsernameNotFoundException("Usuário inexistente!"));
-	}*/
 }

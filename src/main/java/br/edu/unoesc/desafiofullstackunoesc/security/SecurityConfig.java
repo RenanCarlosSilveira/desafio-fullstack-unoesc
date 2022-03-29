@@ -21,6 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers("/webjars/**", "/css/**", "/image/**", "/js/**", "use.fontawesome.com/**").permitAll()
 		.antMatchers("/login").permitAll()
+		.antMatchers("/registros/**").permitAll()
+		.antMatchers("www.ibge.gov.br/**").permitAll()
 		.anyRequest().authenticated()
 		.and()
 		.formLogin().loginPage("/login").defaultSuccessUrl("/home", true).failureUrl("/login-error").permitAll()

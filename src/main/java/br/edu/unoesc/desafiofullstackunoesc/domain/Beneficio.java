@@ -1,12 +1,29 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
+import javax.persistence.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "beneficio")
 public class Beneficio {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int idSQL;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "beneficiario_id", referencedColumnName = "idSQL")
 	public Beneficiario beneficiario;
 	public String enquadramentoAuxilioEmergencial;
 	public String id;
 	public String mesDisponibilizacao;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "municipio_id", referencedColumnName = "idSQL")
 	public Municipio municipio;
 	public String numeroParcela;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "responsaveleuxilioemergencial_id", referencedColumnName = "idSQL")
 	public ResponsavelAuxilioEmergencial responsavelAuxilioEmergencial;
 	public String situacaoAuxilioEmergencial;
 	public String valor;
@@ -95,5 +112,20 @@ public class Beneficio {
 				+ ", valor=" + valor + "]";
 	}
 
-	
+	public Beneficio(Beneficiario beneficiario, String enquadramentoAuxilioEmergencial, String id,
+			String mesDisponibilizacao, Municipio municipio, String numeroParcela,
+			ResponsavelAuxilioEmergencial responsavelAuxilioEmergencial, String situacaoAuxilioEmergencial,
+			String valor) {
+		super();
+		this.beneficiario = beneficiario;
+		this.enquadramentoAuxilioEmergencial = enquadramentoAuxilioEmergencial;
+		this.id = id;
+		this.mesDisponibilizacao = mesDisponibilizacao;
+		this.municipio = municipio;
+		this.numeroParcela = numeroParcela;
+		this.responsavelAuxilioEmergencial = responsavelAuxilioEmergencial;
+		this.situacaoAuxilioEmergencial = situacaoAuxilioEmergencial;
+		this.valor = valor;
+	}
+
 }

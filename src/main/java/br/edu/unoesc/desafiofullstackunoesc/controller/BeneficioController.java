@@ -7,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.http.HttpEntity;
@@ -14,8 +16,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,29 +32,46 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.edu.unoesc.desafiofullstackunoesc.domain.Beneficio;
+import br.edu.unoesc.desafiofullstackunoesc.domain.Cabecalho;
 import br.edu.unoesc.desafiofullstackunoesc.domain.Departamento;
 import br.edu.unoesc.desafiofullstackunoesc.domain.Municipio;
-import br.edu.unoesc.desafiofullstackunoesc.service.DepartamentoService;
+import br.edu.unoesc.desafiofullstackunoesc.service.BeneficioService;
 
 @Controller
 @RequestMapping("/departamentos")
-public class DepartamentoController {
+public class BeneficioController {
 
 	@Autowired
-	private DepartamentoService service;
+	private BeneficioService service;
 
+	
 	@GetMapping("/cadastrar")
-	public String cadastrar(Departamento departamento) throws IOException {
-		teste();
+	public String cadastrar(Cabecalho cabecalho, Beneficio beneficio){
 		return "/departamento/cadastro";
 	}
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
-		model.addAttribute("departamentos", service.buscarTodos());
+		model.addAttribute("beneficio", service.buscarTodos());
 		return "/departamento/lista";
 	}
 
+	@PostMapping("/consultar")
+	public String consultar(@ModelAttribute Cabecalho cabecalho, BindingResult bindingResult, Model model) throws IOException {
+		buscaBeneficios(cabecalho.codibge, cabecalho.anoref, cabecalho.mesref, cabecalho.pag);
+		//model.addAttribute("beneficio", service.buscarTodos());
+		//attr.addFlashAttribute("sucess", "Departamento salvo!");
+		return "/departamento/cadastro";
+	}
+	
+    @RequestMapping(path = "/exportar")
+    public void getAllEmployeesInCsv(HttpServletResponse servletResponse) throws IOException {
+        servletResponse.setContentType("text/csv");
+        servletResponse.addHeader("Content-Disposition","attachment; filename=\"beneficios.csv\"");
+        //csvExportService.writeEmployeesToCsv(servletResponse.getWriter());
+    }
+
+	/*
 	@PostMapping("/salvar")
 	public String salvar(Departamento departamento, RedirectAttributes attr) {
 		service.salvar(departamento);
@@ -76,60 +98,31 @@ public class DepartamentoController {
 		 * if(service.departamentoTemCargos(id)) { model.addAttribute("fail",
 		 * "Há cargos vinculados, verifique!"); }else {
 		 */
-		service.excluir(id);
+		/*service.excluir(id);
 		model.addAttribute("sucess", "Departamento removido!");
 		// }
 		return listar(model); // Aponta para o metodo que redireciona "/departamento/lista";
-	}
+	}*/
 
-	// 69f77784d22e173e85bf5ff394593de7
-
-	/*
-	 * HttpHeaders createHeaders(){ return new HttpHeaders() {{ String auth =
-	 * "chave-api-dados" + ":" + "59eeaf7bd6e9ac852374c683dbf911fc"; String
-	 * authHeader = "Basic " + new String(auth); set( "Authorization", authHeader );
-	 * }}; }
-	 */
-
-	/*
-	 * public String teste() { RestTemplate template = new RestTemplate();
-	 * UriComponents uri = UriComponentsBuilder.newInstance().scheme("https")
-	 * .host("api.portaldatransparencia.gov.br")
-	 * .path("api-de-dados/auxilio-emergencial-beneficiario-por-municipio")
-	 * .queryParam("codIbge", "4203907") .queryParam("mesAno", 202012)
-	 * .queryParam("pagina ", 1) .build();
-	 * 
-	 * HttpHeaders headers = new HttpHeaders();
-	 * headers.add("chave-api-dados","59eeaf7bd6e9ac852374c683dbf911fc");
-	 * HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
-	 * 
-	 * ResponseEntity<String> result = template.(uri, HttpMethod.GET, null,
-	 * String.class);
-	 * 
-	 * System.out.println(result);
-	 * 
-	 * //String result = template.exchange(uri, HttpMethod.POST, new
-	 * HttpEntity<T>(createHeaders()), String.class); //String result =
-	 * template.getForObject(uri.toString(), String.class);
-	 * 
-	 * return result.getBody(); }
-	 */
-
-	public String teste() throws IOException {
-		URL url = new URL("https://api.portaldatransparencia.gov.br/api-de-dados/auxilio-emergencial-beneficiario-por-municipio?codigoIbge=4209003%20&mesAno=202108&pagina=1");
-		//URL url = new URL("http://ip.jsontest.com/");
+	public String buscaBeneficios(String codibge, String anoref, String mesref, String pag) throws IOException {
+		
+		URL url = new URL("https://api.portaldatransparencia.gov.br/api-de-dados/auxilio-emergencial-beneficiario-por-municipio?codigoIbge="+codibge+"&mesAno="+anoref+mesref+"&pagina="+pag);
+		
+		//URL url = new URL("https://api.portaldatransparencia.gov.br/api-de-dados/auxilio-emergencial-beneficiario-por-municipio?codigoIbge=4209003%20&mesAno=202108&pagina=1");
+		// URL url = new URL("http://ip.jsontest.com/");
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setRequestMethod("GET");
 		connection.setRequestProperty("Accept", "application/json");
 		connection.setRequestProperty("chave-api-dados", "86852ef80c2505cdc3728d23d30d4d06");
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 		String output = "";
-	
+
 		Beneficio[] ben_beneficiario = new ObjectMapper().readValue(buffer, Beneficio[].class);
-		
-		for(int i = 0; i < ben_beneficiario.length; i++) {
+
+		for (int i = 0; i < ben_beneficiario.length; i++) {
 			System.out.println(ben_beneficiario[i].beneficiario.nome);
 			System.out.println(ben_beneficiario[i].valor);
+			service.salvar(ben_beneficiario[i]);
 		}
 		connection.disconnect();
 		return output;

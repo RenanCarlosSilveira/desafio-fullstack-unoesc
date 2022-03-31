@@ -1,15 +1,35 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "municipio")
 public class Municipio {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int idSQL;
 	public String codigoIBGE;
 	public String codigoRegiao;
 	public String nomeIBGE;
 	public String nomeRegiao;
 	public String pais;
-    public Uf uf;
-    
-    public Municipio() {}
+	@OneToOne(mappedBy = "municipio")
+	public Beneficio beneficio;
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "uf_id", referencedColumnName = "idSQL")
+	public Uf uf;
+
+	public Municipio() {
+	}
 
 	public String getCodigoIBGE() {
 		return codigoIBGE;
@@ -58,6 +78,5 @@ public class Municipio {
 	public void setUf(Uf uf) {
 		this.uf = uf;
 	}
-    
-    
+
 }

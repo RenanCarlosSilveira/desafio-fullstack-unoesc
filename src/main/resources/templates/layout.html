@@ -17,6 +17,10 @@
 <link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
 	rel="stylesheet" />
 
+<!-- Data tables -->
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
 <!-- Custom styles for this template -->
 <link href="/css/style.css" rel="stylesheet" />
 </head>
@@ -47,6 +51,8 @@
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" charset="utf8"
+		src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 	<script type="text/javascript">
 		var url = '';
 
@@ -69,6 +75,43 @@
 				$(".sidebar").toggleClass("sidebar-open");
 			})
 		});
+		function Employee(name, position, salary, office) {
+			this.name = name;
+			this.position = position;
+			this.salary = salary;
+			this._office = office;
+
+			this.office = function() {
+				return this._office;
+			}
+		};
+
+		$('#beneficio-result').DataTable({
+		/*data : [
+				("Tiger Nixon",
+						"System Architect", "$3,120",
+						"Edinburgh"),
+				("Garrett Winters",
+						"Director", "$5,300",
+						"Edinburgh") ],
+						columns : [ {
+							data : 'Id'
+						}, {
+							data : 'Nome'
+						}, {
+							data : 'Cpf'
+						}, {
+							data : 'Nis'
+						}, {
+							data : 'Parcela'
+						}, {
+							data : 'Valor'
+						}, {
+							data : 'Situação'
+						} ]*/
+		});
+
+		$('#tab_lst_salvo').DataTable({});
 	</script>
 </body>
 </html>

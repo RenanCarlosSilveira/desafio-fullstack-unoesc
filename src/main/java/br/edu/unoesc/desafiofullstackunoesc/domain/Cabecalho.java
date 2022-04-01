@@ -1,7 +1,7 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
-@SuppressWarnings("serial")
-public class Cabecalho extends AbstractEntity{
+
+public class Cabecalho {
 	public String codibge;
 	public String anoref;
 	public String mesref;

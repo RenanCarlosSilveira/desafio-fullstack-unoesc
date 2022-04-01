@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,20 +16,28 @@ import javax.persistence.Table;
 public class Municipio {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int idSQL;
-	public String codigoIBGE;
-	public String codigoRegiao;
-	public String nomeIBGE;
-	public String nomeRegiao;
-	public String pais;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id_municipio;
+	private String codigoIBGE;
+	private String codigoRegiao;
+	private String nomeIBGE;
+	private String nomeRegiao;
+	private String pais;
 	@OneToOne(mappedBy = "municipio")
-	public Beneficio beneficio;
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uf_id", referencedColumnName = "idSQL")
-	public Uf uf;
+	private Beneficio beneficio;
+	@ManyToOne(cascade = {CascadeType.ALL})
+	@JoinColumn(name = "id_uf")
+	private Uf uf;
 
 	public Municipio() {
+	}
+
+	public int getId_municipio() {
+		return id_municipio;
+	}
+
+	public void setId_municipio(int id_municipio) {
+		this.id_municipio = id_municipio;
 	}
 
 	public String getCodigoIBGE() {
@@ -71,6 +80,14 @@ public class Municipio {
 		this.pais = pais;
 	}
 
+	public Beneficio getBeneficio() {
+		return beneficio;
+	}
+
+	public void setBeneficio(Beneficio beneficio) {
+		this.beneficio = beneficio;
+	}
+
 	public Uf getUf() {
 		return uf;
 	}
@@ -78,5 +95,14 @@ public class Municipio {
 	public void setUf(Uf uf) {
 		this.uf = uf;
 	}
+
+	@Override
+	public String toString() {
+		return "MunicipioEntity [id_municipio=" + id_municipio + ", codigoIBGE=" + codigoIBGE + ", codigoRegiao="
+				+ codigoRegiao + ", nomeIBGE=" + nomeIBGE + ", nomeRegiao=" + nomeRegiao + ", pais=" + pais
+				+ ", beneficio=" + beneficio + ", uf=" + uf + "]";
+	}
+
+	
 
 }

@@ -1,8 +1,13 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
-import javax.persistence.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
@@ -10,25 +15,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class Beneficio {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int idSQL;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id_beneficio;
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "beneficiario_id", referencedColumnName = "idSQL")
-	public Beneficiario beneficiario;
-	public String enquadramentoAuxilioEmergencial;
-	public String id;
-	public String mesDisponibilizacao;
+	@JoinColumn(name = "beneficiario_id", referencedColumnName = "id_beneficiario")
+	private Beneficiario beneficiario;
+	private String enquadramentoAuxilioEmergencial;
+	private String id;
+	private String mesDisponibilizacao;
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "municipio_id", referencedColumnName = "idSQL")
-	public Municipio municipio;
-	public String numeroParcela;
+	@JoinColumn(name = "municipio_id", referencedColumnName = "id_municipio")
+	private Municipio municipio;
+	private String numeroParcela;
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "responsaveleuxilioemergencial_id", referencedColumnName = "idSQL")
-	public ResponsavelAuxilioEmergencial responsavelAuxilioEmergencial;
-	public String situacaoAuxilioEmergencial;
-	public String valor;
+	@JoinColumn(name = "responsaveleuxilioemergencial_id", referencedColumnName = "id_responsavelAuxilioEmergencial")
+	private ResponsavelAuxilioEmergencial responsavelAuxilioEmergencial;
+	private String situacaoAuxilioEmergencial;
+	private String valor;
 
 	public Beneficio() {
+	}
+
+	public int getId_beneficio() {
+		return id_beneficio;
+	}
+
+	public void setId_beneficio(int id_beneficio) {
+		this.id_beneficio = id_beneficio;
 	}
 
 	public Beneficiario getBeneficiario() {
@@ -102,14 +115,16 @@ public class Beneficio {
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "Beneficio [beneficiario=" + beneficiario + ", enquadramentoAuxilioEmergencial="
-				+ enquadramentoAuxilioEmergencial + ", id=" + id + ", mesDisponibilizacao=" + mesDisponibilizacao
-				+ ", municipio=" + municipio + ", numeroParcela=" + numeroParcela + ", responsavelAuxilioEmergencial="
-				+ responsavelAuxilioEmergencial + ", situacaoAuxilioEmergencial=" + situacaoAuxilioEmergencial
-				+ ", valor=" + valor + "]";
+		return "BeneficioEntity [id_beneficio=" + id_beneficio + ", beneficiario=" + beneficiario
+				+ ", enquadramentoAuxilioEmergencial=" + enquadramentoAuxilioEmergencial + ", id=" + id
+				+ ", mesDisponibilizacao=" + mesDisponibilizacao + ", municipio=" + municipio + ", numeroParcela="
+				+ numeroParcela + ", responsavelAuxilioEmergencial=" + responsavelAuxilioEmergencial
+				+ ", situacaoAuxilioEmergencial=" + situacaoAuxilioEmergencial + ", valor=" + valor + "]";
 	}
 
 	public Beneficio(Beneficiario beneficiario, String enquadramentoAuxilioEmergencial, String id,

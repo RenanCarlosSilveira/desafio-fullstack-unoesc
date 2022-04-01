@@ -9,6 +9,8 @@ import javax.persistence.*;
 @Table(name = "DEPARTAMENTOS")
 public class Departamento extends AbstractEntity {
 
+
+	
 	@Column(name = "nome", nullable = false, unique = true, length = 60)
 	private String nome;
 	

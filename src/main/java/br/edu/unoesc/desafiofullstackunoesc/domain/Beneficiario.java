@@ -12,17 +12,33 @@ import javax.persistence.Table;
 @Table(name = "beneficiario")
 public class Beneficiario {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int idSQL;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id_beneficiario;
 	@OneToOne(mappedBy="beneficiario")
-	public Beneficio beneficio;
-	public String cpfFormatado;
-	public String nis;
-    public String nome;
+	private Beneficio beneficio;
+	private String cpfFormatado;
+	private String nis;
+	private String nome;
     
     public Beneficiario() {}
-	
-    public String getCpfFormatado() {
+
+	public int getId_beneficiario() {
+		return id_beneficiario;
+	}
+
+	public void setId_beneficiario(int id_beneficiario) {
+		this.id_beneficiario = id_beneficiario;
+	}
+
+	public Beneficio getBeneficio() {
+		return beneficio;
+	}
+
+	public void setBeneficio(Beneficio beneficio) {
+		this.beneficio = beneficio;
+	}
+
+	public String getCpfFormatado() {
 		return cpfFormatado;
 	}
 
@@ -48,9 +64,10 @@ public class Beneficiario {
 
 	@Override
 	public String toString() {
-		return "Beneficiario [cpfFormatado=" + cpfFormatado + ", nis=" + nis + ", nome=" + nome + "]";
-	}
+		return "BeneficiarioEntity [id_beneficiario=" + id_beneficiario + ", beneficio=" + beneficio + ", cpfFormatado="
+				+ cpfFormatado + ", nis=" + nis + ", nome=" + nome + "]";
+	} 
+	
+	
 
-
-    
 }

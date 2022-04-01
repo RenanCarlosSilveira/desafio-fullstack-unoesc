@@ -12,16 +12,31 @@ import javax.persistence.Table;
 @Table(name = "responsavelAuxilioEmergencial")
 public class ResponsavelAuxilioEmergencial {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int idSQL;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id_responsavelAuxilioEmergencial;
 	@OneToOne(mappedBy = "responsavelAuxilioEmergencial")
-	public Beneficio beneficio;
-	public String cpfFormatado;
-	public String nis;
-	public String nome;
-
+	private Beneficio beneficio;
+	private String cpfFormatado;
+	private String nis;
+	private String nome;
 
 	public ResponsavelAuxilioEmergencial() {
+	}
+
+	public int getId_responsavelAuxilioEmergencial() {
+		return id_responsavelAuxilioEmergencial;
+	}
+
+	public void setId_responsavelAuxilioEmergencial(int id_responsavelAuxilioEmergencial) {
+		this.id_responsavelAuxilioEmergencial = id_responsavelAuxilioEmergencial;
+	}
+
+	public Beneficio getBeneficio() {
+		return beneficio;
+	}
+
+	public void setBeneficio(Beneficio beneficio) {
+		this.beneficio = beneficio;
 	}
 
 	public String getCpfFormatado() {
@@ -46,6 +61,13 @@ public class ResponsavelAuxilioEmergencial {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	@Override
+	public String toString() {
+		return "ResponsavelAuxilioEmergencialEntity [id_responsavelAuxilioEmergencial="
+				+ id_responsavelAuxilioEmergencial + ", beneficio=" + beneficio + ", cpfFormatado=" + cpfFormatado
+				+ ", nis=" + nis + ", nome=" + nome + "]";
 	}
 
 }

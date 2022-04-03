@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
+	<section class="layout-content" layout:fragment="corpo">
+
+		<nav class="navbar navbar-expand-md bg-light">
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><i class="oi oi-caret-right"></i>
+						<span>Lista de Beneficios</span></li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container" id="listagem">
+
+			<div th:replace="fragments/alert"></div>
+			<form th:action="@{/dados/consultarapi/}"
+				th:object="${cabecalho}" method="POST" id="form_busca">
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="nome">Código IBGE</label> <input type="number"
+							class="form-control" id="codibge"
+							placeholder="Código IBGE Município" autofocus="autofocus"
+							maxlength="8" minlength="1" th:field="*{codibge}" required />
+					</div>
+					<div class="form-group col-md-4" valign="middle">
+						<label for="consulta">Consultar</label> <br> <a
+							href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php"
+							target="_blank" rel="noopener noreferrer">
+							<button class="btn btn-secondary" type="button" id="consulta">
+								<i class="oi oi-magnifying-glass"></i>
+							</button>
+						</a>
+					</div>
+					</a>
+				</div>
+			</form>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-sm"
+					id="tab_lst_salvo">
+					<thead>
+						<tr>
+							<th>id_gov</th>
+							<th>UF</th>
+							<th>Município</th>
+							<th>Parcela</th>
+							<th>Valor</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="b : ${beneficio}">
+							<td th:text="${b?.id}"></td>
+							<td th:text="${b?.municipio?.uf?.nome}"></td>
+							<td th:text="${b?.municipio?.nomeIBGE}"></td>
+							<td th:text="${b?.numeroParcela}"></td>
+							<td th:text="|R$ ${#objects.nullSafe(b?.valor, '')}|"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div th:replace="fragments/modal :: modal"></div>
+	</section>
+</body>
+</html>

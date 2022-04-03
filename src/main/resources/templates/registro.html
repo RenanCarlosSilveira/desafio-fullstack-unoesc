@@ -64,22 +64,14 @@
 											<small th:text="${subtexto}"></small>
 										</p>
 									</div>
-									<div class="mb-3">
-										<div class="form-label-group">
-											<input type="email" class="form-control" id="email"
-												placeholder="Email"
-												aria-describedby="validationTooltipUsernamePrepend" required />
-											<label for="email">Email</label>
-											<div class="invalid-feedback">Email é requerido.</div>
-										</div>
-									</div>
+
 
 									<div class="mb-3">
 										<div class="form-label-group">
 											<input type="email" class="form-control" id="email2"
 												th:field="*{email}" placeholder="Repita seu Email"
 												aria-describedby="validationTooltipUsernamePrepend" required />
-											<label for="email2">Repita seu Email</label>
+											<label for="email2">Email</label>
 											<div class="invalid-feedback">Email é requerido.</div>
 										</div>
 									</div>
@@ -95,27 +87,7 @@
 										</div>
 									</div>
 
-									<!-- <div class="mb-3">
-									<label for="perfis">Perfil</label> <select id="perfis"
-										class="custom-select" size="4" th:field="*{perfis}" multiple
-										required>
-										<option value="1">Administrador</option>
-										<option value="2">Médico</option>
-										<option value="3">Paciente</option>
-									</select> <input type="hidden" value="0" name="perfis" />
-									<div class="invalid-feedback">Pelo menos um perfil é
-										requerido.</div>
-								</div>-->
 
-									<!--  <div class="mb-3">
-									<div class="custom-control custom-switch">
-										<input type="checkbox" class="custom-control-input"
-											th:field="*{ativo}" id="ativo"
-											th:if="${ativo == true ? 'checked=checked' : ''}" /> <label
-											class="custom-control-label" for="ativo">Cadastro
-											Ativo</label>
-									</div>
-								</div>-->
 
 									<input type="hidden" th:field="*{id}">
 									<div class="d-grid gap-2 col-20 mx-auto">

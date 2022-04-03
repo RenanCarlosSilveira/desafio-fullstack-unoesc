@@ -29,19 +29,20 @@ public class RegistroController {
 	@PostMapping("/salvar")
 	public String salvar(@ModelAttribute Usuario usuario, ModelMap model, BindingResult result) {
 		model.addAttribute("usuario", usuario);
-		service.salvarUsuario(usuario);
-		model.addAttribute("alerta", " ");
-		model.addAttribute("titulo", "Usuário Cadastrado!");
-		model.addAttribute("texto", " ");
-		model.addAttribute("subtexto", "Seu acesso está diponível, retorne à página de login.");
-		return "registro";
+		try {
+			service.salvarUsuario(usuario);
+			model.addAttribute("alerta", " ");
+			model.addAttribute("titulo", "Usuário Cadastrado!");
+			model.addAttribute("texto", " ");
+			model.addAttribute("subtexto", "Seu acesso está diponível, retorne à página de login.");
+			return "registro";
+		} catch (Exception e) {
+			model.addAttribute("alerta", "erro");
+			model.addAttribute("titulo", "Usuario existente!");
+			model.addAttribute("texto", "Digite informações diferentes!");
+			model.addAttribute("subtexto", "");
+			return "registro";
+		}
 	}
 
-	/*
-	 * @GetMapping({ "/registro-error" }) public String loginError(ModelMap model) {
-	 * model.addAttribute("alerta", "erro"); model.addAttribute("titulo",
-	 * "Preencha os dados"); model.addAttribute("texto", "Tente novamente!");
-	 * model.addAttribute("subtexto", "Complete o formulario com dados validos!");
-	 * return "registro"; }
-	 */
 }

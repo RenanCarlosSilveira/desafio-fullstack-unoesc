@@ -1,6 +1,9 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,8 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@SuppressWarnings("serial")
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
+
 @Entity
 @Table(name = "beneficio")
 public class Beneficio {
@@ -17,23 +24,32 @@ public class Beneficio {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_beneficio;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "beneficiario_id", referencedColumnName = "id_beneficiario")
-	private Beneficiario beneficiario;
 	private String enquadramentoAuxilioEmergencial;
 	private String id;
 	private String mesDisponibilizacao;
+	private String numeroParcela;
+	private String situacaoAuxilioEmergencial;
+	private String valor;
+	@DateTimeFormat(iso = ISO.DATE)
+	@Column(name = "dataconsulta", nullable = false, columnDefinition = "DATE")
+	private LocalDateTime dataconsulta;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "municipio_id", referencedColumnName = "id_municipio")
 	private Municipio municipio;
-	private String numeroParcela;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "responsaveleuxilioemergencial_id", referencedColumnName = "id_responsavelAuxilioEmergencial")
+	@Transient
 	private ResponsavelAuxilioEmergencial responsavelAuxilioEmergencial;
-	private String situacaoAuxilioEmergencial;
-	private String valor;
+	@Transient
+	private Beneficiario beneficiario;
 
 	public Beneficio() {
+	}
+
+	public LocalDateTime getDataconsulta() {
+		return dataconsulta;
+	}
+
+	public void setDataconsulta(LocalDateTime dataconsulta) {
+		this.dataconsulta = dataconsulta;
 	}
 
 	public int getId_beneficio() {
@@ -115,8 +131,6 @@ public class Beneficio {
 	public void setValor(String valor) {
 		this.valor = valor;
 	}
-	
-	
 
 	@Override
 	public String toString() {
@@ -141,6 +155,18 @@ public class Beneficio {
 		this.responsavelAuxilioEmergencial = responsavelAuxilioEmergencial;
 		this.situacaoAuxilioEmergencial = situacaoAuxilioEmergencial;
 		this.valor = valor;
+	}
+
+	@Transient
+	public String toCSV() {
+		return String.format("%s;%s;%s;%s;%s;%s;%s;%s;",getId(),
+				getBeneficiario().getNome(),
+				getEnquadramentoAuxilioEmergencial(),
+				getMesDisponibilizacao(),
+				getMunicipio().getUf().getNome(),
+				getMunicipio().getNomeIBGE(),
+				getNumeroParcela(), 
+				getValor());
 	}
 
 }

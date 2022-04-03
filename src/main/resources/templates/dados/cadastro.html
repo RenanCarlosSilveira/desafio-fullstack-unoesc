@@ -20,7 +20,7 @@
 
 			<div th:replace="fragments/alert"></div>
 
-			<form th:action="@{/departamentos/consultar/}"
+			<form th:action="@{/dados/consultarapi/}"
 				th:object="${cabecalho}" method="POST" id="form_busca">
 				<div class="form-row">
 					<div class="form-group col-md-4">
@@ -49,9 +49,9 @@
 						<!-- th:field="*{dataEntrada}"/>-->
 					</div>
 					<div class="form-group col-md-2">
-						<label for="dataEntrada">Mês Referência</label> <input type="number"
-							maxlength="2" minlength="2" class="form-control" id="mesref"
-							th:field="*{mesref}" required>
+						<label for="dataEntrada">Mês Referência</label> <input
+							type="number" maxlength="2" minlength="2" class="form-control"
+							id="mesref" th:field="*{mesref}" required>
 						<!-- th:field="*{dataEntrada}"/>-->
 					</div>
 					<div class="form-group col-md-2">
@@ -61,53 +61,27 @@
 					</div>
 				</div>
 			</form>
-			<form hidden="true" th:action="@{/departamentos/salvar/}"
+			<form hidden="true" th:action="@{/dados/salvar/}"
 				method="POST" id="form_salva" th:object="${cabecalho}">
-				<div class="form-row">
-					<div class="form-group col-md-4">
-						<label for="nome">Código IBGE</label> <input type="text"
-							class="form-control" id="codibge"
-							placeholder="Código IBGE Município" autofocus="autofocus"
-							maxlength="8" minlength="1" th:field="*{codibge}"
-							th:value="${cabecalho.codibge}" />
-					</div>
-					<div class="form-group col-md-4" valign="middle">
-						<label for="consulta">Consultar</label> <br> <a
-							href="https://www.ibge.gov.br/explica/codigos-dos-municipios.php"
-							target="_blank" rel="noopener noreferrer">
-							<button class="btn btn-secondary" type="button" id="consulta">
-								<i class="oi oi-magnifying-glass"></i>
-							</button>
-						</a>
-					</div>
-					</a>
-				</div>
-
-				<div class="form-row">
-					<div class="form-group col-md-2">
-						<label for="dataEntrada">Ano Referência</label> <input
-							type="number" class="form-control" id="anoref" maxlength="4"
-							minlength="4" th:field="*{anoref}" th:value="${cabecalho.anoref}">
-						<!-- th:field="*{dataEntrada}"/>-->
-					</div>
-					<div class="form-group col-md-2">
-						<label for="dataEntrada">Mês Referência</label> <input type="text"
-							maxlength="2" minlength="2" class="form-control" id="mesref"
-							th:field="*{mesref}" th:value="${cabecalho.mesref}">
-						<!-- th:field="*{dataEntrada}"/>-->
-					</div>
-					<div class="form-group col-md-2">
-						<label for="nome">Pagina</label> <input type="number"
-							class="form-control" id="pag" minlength="1" autofocus="autofocus"
-							th:field="*{pag}" th:value="${cabecalho.pag}" />
-					</div>
-				</div>
+				<input id="codibge" th:field="*{codibge}" th:value="${cabecalho.codibge}" />
+				<input id="anoref"	th:field="*{anoref}" th:value="${cabecalho.anoref}">
+				<input id="mesref" th:field="*{mesref}"	th:value="${cabecalho.mesref}">
+				<input id="pag"	th:field="*{pag}" th:value="${cabecalho.pag}" />
+			</form>
+			<form hidden="true" th:action="@{/dados/exportar/}" method="GET"
+				id="form_exporta">
+				<input type="text" th:name="codibge" th:value="${cabecalho.codibge}" />
+				<input type="text" th:name="anoref" th:value="${cabecalho.anoref}" />
+				<input type="text" th:name="mesref" th:value="${cabecalho.mesref}" />
+				<input type="text" th:name="pag" th:value="${cabecalho.pag}" />
 			</form>
 			<span>
-				<button type="submit" class="btn btn-success btn-sm"
+				<button type="submit" class="btn btn-primary btn-sm"
 					form="form_busca">Buscar Dados</button>
 				<button type="submit" class="btn btn-success btn-sm"
 					form="form_salva">Salvar Dados</button>
+				<button type="submit" class="btn btn-secondary btn-sm"
+					form="form_exporta">Exportar Dados</button>
 			</span>
 		</div>
 		<div class="container" id="listagem" method="POST">

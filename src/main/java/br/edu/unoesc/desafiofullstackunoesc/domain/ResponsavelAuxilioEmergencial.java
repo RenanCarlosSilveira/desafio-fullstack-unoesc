@@ -1,20 +1,7 @@
 package br.edu.unoesc.desafiofullstackunoesc.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-@SuppressWarnings("serial")
-@Entity
-@Table(name = "responsavelAuxilioEmergencial")
 public class ResponsavelAuxilioEmergencial {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id_responsavelAuxilioEmergencial;
-	@OneToOne(mappedBy = "responsavelAuxilioEmergencial")
 	private Beneficio beneficio;
 	private String cpfFormatado;
 	private String nis;
